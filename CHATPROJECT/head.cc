@@ -1,4 +1,4 @@
-///
+//
 /// @file    head.cc
 /// @author  shenjiangqiu(ivy22233qiu@live.com)
 /// @date    2017-02-06 21:20:56
@@ -13,8 +13,9 @@ void sig(int signum)
 int ShowWindow(char **argv)
 {
 	signal(SIGALRM,sig);
-	if(ischat(argv))
+	if(ischat(argv))//chat window
 	{
+		//开始和显示窗口同步
 		int shmid;
 		int key;
 		if(isu1(argv))
@@ -39,8 +40,45 @@ int ShowWindow(char **argv)
 		cout<<"start to wait for signal"<<endl;
 		pause();
 		cout<<"down!"<<endl;
+		char cmd[10];
+		pid_t rmid;
+		sscanf(buf,"%s%d",cmd,&rmid);
+		kill(rmid,SIGALRM);
+		//同步完毕
+
+		//开始和另一个chat同步
+		mkfifo("chatfifo",0666);
+		char fifonamesend[10];
+		char fifonameget[10];
+		if(isu1(argv))
+		{
+			strcpy(fifonamesend,"u1tou2");
+			strcpy(fifonameget,"u2tou1");
+		}
+		else
+		{
+			strcpy(fifonamesend,"u2tou1");
+			strcpy(fifonameget,"u1tou2");
+		}
+		int ret=mkfifo(fifonamesend,0666);
+		if(ret<0)
+			return -2;
+		int fd[2];
+		if(isu1(argv))
+			fd[0]=open(fifonamesend,O_WRONLY);
+		while(1)
+		{
+			fd_set fdin;
+			FD_ZERO(&fdin);
+			FD_SET(fd[1],&fdin);
+			FD_SET(STDIN_FILENO,&fdin);
+			select(fd[1]+1,&fdin,NULL,NULL,NULL);
+
+		}	
+
+		//unlink("chatfifo",0666);
 	}
-	else
+	else//show window
 	{
 		int shmid;
 		char *buff;
@@ -71,7 +109,7 @@ int ShowWindow(char **argv)
 			kill(pidofchat,SIGALRM);
 			cout<<"send kill !"<<endl;
 			return 0;
-			
+
 		}
 
 	}
