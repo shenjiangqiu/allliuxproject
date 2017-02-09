@@ -1,0 +1,5 @@
+socket_server:socket_server.cc socket_client.cc
+	g++ socket_server.cc -o socket_server
+	g++ socket_client.cc -o socket_client
+clean:
+	rm -rf socket_server socket_client
