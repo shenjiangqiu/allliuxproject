@@ -5,7 +5,7 @@
 ///
 
 #include <head.h>
-#include "myfcntl.h"
+#include "../include/myfcntl.h"
 int myfcntl(int fd,int cmd)
 {
 	if(fd<0)

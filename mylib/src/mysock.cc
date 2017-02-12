@@ -4,7 +4,7 @@
  /// @date    2017-02-11 14:17:17
  ///
  
-#include "mysock.h"
+#include "../include/mysock.h"
 int creataddr(sockaddr_in &saddr,const char*addr,const char*port)
 {
 	if(addr==NULL||port==NULL)
