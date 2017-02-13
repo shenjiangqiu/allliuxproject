@@ -13,7 +13,7 @@ int main()
 {
 	int ret;
 	sockaddr_in seraddr;
-	ret=creataddr(seraddr,"192.168.4.17","2233");
+	ret=creataddr(seraddr,"192.168.4.232","2233");
 	if(ret==-1)
 	{
 		cout<<"error creataddr"<<endl;
